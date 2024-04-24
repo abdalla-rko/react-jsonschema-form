@@ -391,7 +391,9 @@ export default class Form<
     ) {
       schemaUtils = createSchemaUtils<T, S, F>(props.validator, rootSchema, experimental_defaultFormStateBehavior);
     }
-    const formData: T = schemaUtils.getDefaultFormState(schema, inputFormData) as T;
+    const formData: T = isSchemaChanged
+      ? inputFormData ?? (schemaUtils.getDefaultFormState(schema, inputFormData) as T)
+      : (schemaUtils.getDefaultFormState(schema, inputFormData) as T);
     const _retrievedSchema = retrievedSchema ?? schemaUtils.retrieveSchema(schema, formData);
 
     const getCurrentErrors = (): ValidationData<T> => {
